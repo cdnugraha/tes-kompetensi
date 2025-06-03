@@ -27,7 +27,7 @@
       event.preventDefault();
       const answer = event.target.elements["answer"].value;
 
-      fetch("https://script.google.com/macros/s/AKfycbyPGFeNErLEqfAejAzJMuMVqJRfBFk11N0r2-fDMQKzufiqLZs8xpS7843NHHz2R_mzdQ/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbxVd5ucHVGS4TuRS9dBxVhnbmxo8paZPhk1rsnCRfbcAV-7SKflAaWrk_7pM6fkn_uhDg/exec", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -47,10 +47,18 @@
   </script>
 </head>
 <body onload="startTimer(timerDuration, 'quizForm')">
-  <h2>Quick Quiz aa</h2>
+  <h2>Quick Quiz bb</h2>
 
   <div id="countdown" style="font-weight: bold; color: red; margin-bottom: 10px;">
     Time remaining: 30s
   </div>
 
-  <form id="quizForm" onsubmit="handleSubm
+  <form id="quizForm" onsubmit="handleSubmit(event)">
+    <label for="answer">What is 5 x 3?</label><br/>
+    <input type="text" name="answer" required /><br/><br/>
+    <input type="submit" value="Submit Now" />
+  </form>
+
+  <p>This form will auto-submit after 30 seconds and redirect to thank you page.</p>
+</body>
+</html>
