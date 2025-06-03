@@ -1,58 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Timed Google Sheets Form</title>
+  <meta charset="UTF-8">
+  <title>Auto-Submit Quiz</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    #countdown { color: red; font-weight: bold; }
+  </style>
   <script>
-    let timerDuration = 30; // seconds
+    const scriptURL = "PASTE_YOUR_SCRIPT_URL_HERE";
 
-    function startTimer(duration, formId) {
-      let timeLeft = duration;
+    let timeLeft = 30; // seconds
+
+    function startTimer() {
       const display = document.getElementById("countdown");
-
       const interval = setInterval(() => {
         display.textContent = `Time remaining: ${timeLeft}s`;
         timeLeft--;
 
         if (timeLeft < 0) {
           clearInterval(interval);
-          document.getElementById(formId).requestSubmit(); // auto-submit
+          document.getElementById("quizForm").requestSubmit();
         }
       }, 1000);
     }
 
     function handleSubmit(event) {
       event.preventDefault();
-      const form = event.target;
-      const answer = form.elements["answer"].value;
+      const answer = document.querySelector('input[name="answer"]').value;
+      const formData = new URLSearchParams();
+      formData.append("answer", answer);
 
-      fetch("https://script.google.com/macros/s/AKfycbxVd5ucHVGS4TuRS9dBxVhnbmxo8paZPhk1rsnCRfbcAV-7SKflAaWrk_7pM6fkn_uhDg/exec", {
+      fetch(scriptURL, {
         method: "POST",
-        body: JSON.stringify({ answer: answer }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }).then(response => {
-        // ✅ Redirect after successful submission
-        window.location.href = "thankyou.html";
-      }).catch(error => {
-        alert("Error submitting: " + error);
-      });
+        body: formData,
+      })
+      .then(() => window.location.href = "thankyou.html")
+      .catch(error => alert("Submission failed: " + error));
     }
+
+    window.onload = startTimer;
   </script>
 </head>
-<body onload="startTimer(timerDuration, 'quizForm')">
-  <h2>Quick Quiz</h2>
-
-  <div id="countdown" style="font-weight: bold; color: red; margin-bottom: 10px;">
-    Time remaining: 30s
-  </div>
-
+<body>
+  <h2>Mini Quiz</h2>
+  <div id="countdown">Time remaining: 30s</div>
   <form id="quizForm" onsubmit="handleSubmit(event)">
     <label>What is 5 x 3?</label><br>
     <input type="text" name="answer" required><br><br>
-    <input type="submit" value="Submit Now">
+    <button type="submit">Submit</button>
   </form>
-
-  <p>This form will auto-submit after 30 seconds and redirect. tes OK</p>
 </body>
 </html>
