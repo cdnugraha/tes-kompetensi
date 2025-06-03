@@ -15,7 +15,7 @@
 
         if (timeLeft < 0) {
           clearInterval(interval);
-          document.getElementById(formId).requestSubmit();
+          document.getElementById(formId).requestSubmit(); // auto-submit
         }
       }, 1000);
     }
@@ -32,7 +32,8 @@
           "Content-Type": "application/json"
         }
       }).then(response => {
-        alert("Submitted successfully!");
+        // ✅ Redirect after successful submission
+        window.location.href = "thankyou.html";
       }).catch(error => {
         alert("Error submitting: " + error);
       });
@@ -41,6 +42,7 @@
 </head>
 <body onload="startTimer(timerDuration, 'quizForm')">
   <h2>Quick Quiz</h2>
+
   <div id="countdown" style="font-weight: bold; color: red; margin-bottom: 10px;">
     Time remaining: 30s
   </div>
@@ -51,6 +53,6 @@
     <input type="submit" value="Submit Now">
   </form>
 
-  <p>This form will auto-submit after 30 seconds.</p>
+  <p>This form will auto-submit after 30 seconds and redirect.</p>
 </body>
 </html>
