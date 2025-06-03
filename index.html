@@ -1,68 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Form Timer + GSheet (no error)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auto Submit Form</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
     #countdown {
-      font-weight: bold;
       color: red;
+      font-weight: bold;
       margin-bottom: 10px;
     }
   </style>
 </head>
-<body>
-  <h2>Form Quiz ss</h2>
-
+<body onload="startTimer(30, 'quizForm')">
+  <h2>Quick Quiz aja</h2>
   <div id="countdown">Time remaining: 30s</div>
 
-  <!-- ✅ Target iframe for silent submission -->
-  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
+    <label>Email:</label><br>
+    <input name="email" type="email" required /><br><br>
 
-  <form
-    name="submit-to-google-sheet"
-    id="quizForm"
-    method="POST"
-    action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec"
-    target="hidden_iframe"
-    onsubmit="handleSubmit()"
-  >
-    <input name="email" type="email" placeholder="Email" required /><br /><br />
-    <input name="name" type="text" placeholder="Name" required /><br /><br />
-    <textarea name="message" placeholder="Your message..." required></textarea><br /><br />
-    <button type="submit">Submit</button>
+    <label>Name:</label><br>
+    <input name="name" type="text" required /><br><br>
+
+    <label>Answer:</label><br>
+    <textarea name="answer" required></textarea><br><br>
+
+    <button type="submit">Submit Now</button>
   </form>
 
+  <iframe name="hidden_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
+
   <script>
-    let timerDuration = 30;
+    let formSubmitted = false;
 
     function startTimer(duration, formId) {
       let timeLeft = duration;
       const display = document.getElementById("countdown");
+
       const interval = setInterval(() => {
         display.textContent = `Time remaining: ${timeLeft}s`;
         timeLeft--;
+
         if (timeLeft < 0) {
           clearInterval(interval);
-          document.getElementById(formId).requestSubmit();
+          const form = document.getElementById(formId);
+          // Disable all inputs
+          [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
+          form.requestSubmit();
         }
       }, 1000);
     }
 
     function handleSubmit() {
-      // Delay redirect after submission
-      setTimeout(() => {
-        alert("✅ Form submitted successfully!");
-        window.location.href = "thankyou.html";
-      }, 1000);
+      formSubmitted = true;
+      return true; // allow form submission
     }
 
-    // Start timer on load
-    startTimer(timerDuration, "quizForm");
+    function iframeLoaded() {
+      if (formSubmitted) {
+        window.location.href = "thankyou.html";
+      }
+    }
   </script>
 </body>
 </html>
