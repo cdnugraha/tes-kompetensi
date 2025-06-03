@@ -3,10 +3,21 @@
 <head>
   <title>Timed Google Sheets Form</title>
   <script>
+    let timerDuration = 30; // seconds
+
     function startTimer(duration, formId) {
-      setTimeout(() => {
-        document.getElementById(formId).requestSubmit();
-      }, duration * 1000); // 30 seconds
+      let timeLeft = duration;
+      const display = document.getElementById("countdown");
+
+      const interval = setInterval(() => {
+        display.textContent = `Time remaining: ${timeLeft}s`;
+        timeLeft--;
+
+        if (timeLeft < 0) {
+          clearInterval(interval);
+          document.getElementById(formId).requestSubmit();
+        }
+      }, 1000);
     }
 
     function handleSubmit(event) {
@@ -28,13 +39,18 @@
     }
   </script>
 </head>
-<body onload="startTimer(30, 'quizForm')">
+<body onload="startTimer(timerDuration, 'quizForm')">
   <h2>Quick Quiz</h2>
+  <div id="countdown" style="font-weight: bold; color: red; margin-bottom: 10px;">
+    Time remaining: 30s
+  </div>
+
   <form id="quizForm" onsubmit="handleSubmit(event)">
     <label>What is 5 x 3?</label><br>
     <input type="text" name="answer" required><br><br>
     <input type="submit" value="Submit Now">
   </form>
-  <p>Form will auto-submit after 30 seconds.</p>
+
+  <p>This form will auto-submit after 30 seconds.</p>
 </body>
 </html>
