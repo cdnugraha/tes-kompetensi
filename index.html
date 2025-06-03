@@ -1,73 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Form Timer + GSheet</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-      }
-      #countdown {
-        font-weight: bold;
-        color: red;
-        margin-bottom: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Form Quiz</h2>
+<head>
+  <meta charset="utf-8">
+  <title>Form Timer + GSheet (no error)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    #countdown {
+      font-weight: bold;
+      color: red;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Form Quiz ss</h2>
 
-    <div id="countdown">Time remaining: 30s</div>
+  <div id="countdown">Time remaining: 30s</div>
 
-    <form name="submit-to-google-sheet" id="quizForm">
-      <input name="email" type="email" placeholder="Email" required /><br /><br />
-      <input name="name" type="text" placeholder="Name" required /><br /><br />
-      <textarea name="message" placeholder="Your message..." required></textarea><br /><br />
-      <button type="submit">Submit</button>
-    </form>
+  <!-- ✅ Target iframe for silent submission -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-    <script>
-      const scriptURL =
-        "https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec";
-      const form = document.forms["submit-to-google-sheet"];
-      const countdownDisplay = document.getElementById("countdown");
-      let timerDuration = 30;
+  <form
+    name="submit-to-google-sheet"
+    id="quizForm"
+    method="POST"
+    action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec"
+    target="hidden_iframe"
+    onsubmit="handleSubmit()"
+  >
+    <input name="email" type="email" placeholder="Email" required /><br /><br />
+    <input name="name" type="text" placeholder="Name" required /><br /><br />
+    <textarea name="message" placeholder="Your message..." required></textarea><br /><br />
+    <button type="submit">Submit</button>
+  </form>
 
-      // ⏳ Start Timer
-      function startTimer(duration, formId) {
-        let timeLeft = duration;
-        const interval = setInterval(() => {
-          countdownDisplay.textContent = `Time remaining: ${timeLeft}s`;
-          timeLeft--;
-          if (timeLeft < 0) {
-            clearInterval(interval);
-            document.getElementById(formId).requestSubmit();
-          }
-        }, 1000);
-      }
+  <script>
+    let timerDuration = 30;
 
-      // ✅ Submit with XMLHttpRequest (no fetch CORS error)
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", scriptURL, true);
-        xhr.onload = function () {
-          if (xhr.status === 200) {
-            alert("Success! Your form has been submitted.");
-            window.location.href = "thankyou.html";
-          } else {
-            alert("Error submitting form.");
-          }
-        };
-        xhr.onerror = function () {
-          alert("Network error.");
-        };
-        xhr.send(new FormData(form));
-      });
+    function startTimer(duration, formId) {
+      let timeLeft = duration;
+      const display = document.getElementById("countdown");
+      const interval = setInterval(() => {
+        display.textContent = `Time remaining: ${timeLeft}s`;
+        timeLeft--;
+        if (timeLeft < 0) {
+          clearInterval(interval);
+          document.getElementById(formId).requestSubmit();
+        }
+      }, 1000);
+    }
 
-      // ▶️ Start when loaded
-      startTimer(timerDuration, "quizForm");
-    </script>
-  </body>
+    function handleSubmit() {
+      // Delay redirect after submission
+      setTimeout(() => {
+        alert("✅ Form submitted successfully!");
+        window.location.href = "thankyou.html";
+      }, 1000);
+    }
+
+    // Start timer on load
+    startTimer(timerDuration, "quizForm");
+  </script>
+</body>
 </html>
