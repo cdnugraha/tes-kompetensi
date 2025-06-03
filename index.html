@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Timed Google Sheets Form</title>
+  <script>
+    function startTimer(duration, formId) {
+      setTimeout(() => {
+        document.getElementById(formId).requestSubmit();
+      }, duration * 1000); // 30 seconds
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const answer = form.elements["answer"].value;
+
+      fetch("https://script.google.com/macros/s/AKfycbxVd5ucHVGS4TuRS9dBxVhnbmxo8paZPhk1rsnCRfbcAV-7SKflAaWrk_7pM6fkn_uhDg/exec", {
+        method: "POST",
+        body: JSON.stringify({ answer: answer }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(response => {
+        alert("Submitted successfully!");
+      }).catch(error => {
+        alert("Error submitting: " + error);
+      });
+    }
+  </script>
+</head>
+<body onload="startTimer(30, 'quizForm')">
+  <h2>Quick Quiz</h2>
+  <form id="quizForm" onsubmit="handleSubmit(event)">
+    <label>What is 5 x 3?</label><br>
+    <input type="text" name="answer" required><br><br>
+    <input type="submit" value="Submit Now">
+  </form>
+  <p>Form will auto-submit after 30 seconds.</p>
+</body>
+</html>
