@@ -1,64 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Timed Quiz Form</title>
-  <script>
-    // Waktu dalam detik
-    let timerDuration = 30;
-
-    function startTimer(duration, formId) {
-      let timeLeft = duration;
-      const display = document.getElementById("countdown");
-
-      const interval = setInterval(() => {
-        display.textContent = `Time remaining: ${timeLeft}s`;
-        timeLeft--;
-
-        if (timeLeft < 0) {
-          clearInterval(interval);
-          document.getElementById(formId).requestSubmit(); // auto-submit
-        }
-      }, 1000);
-    }
-
-    function handleSubmit(event) {
-      event.preventDefault();
-      const answer = event.target.elements["answer"].value;
-
-     fetch("https://script.google.com/macros/s/AKfycbwu75PEfoYyHXYQ7n3jI5wFImu7EFjtdoMfwIpwsC3lkNP6wKi_vizxnsuUsbM5diDXJw/exec", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({ answer: answer })
-})
-.then(response => response.json()) // HARUS dibaca sebagai .json() karena Apps Script kirim JSON
-.then(result => {
-  console.log("Server response:", result);
-  window.location.href = "thankyou.html";
-})
-.catch(error => {
-  console.error("Submit Error:", error);
-  alert("Error submitting: " + error);
-});
-    }
-  </script>
-</head>
-<body onload="startTimer(timerDuration, 'quizForm')">
-  <h2>Quick Quiz cc</h2>
-
-  <div id="countdown" style="font-weight: bold; color: red; margin-bottom: 10px;">
-    Time remaining: 30s
-  </div>
-
-  <form id="quizForm" onsubmit="handleSubmit(event)">
-    <label for="answer">What is 5 x 3?</label><br/>
-    <input type="text" name="answer" required /><br/><br/>
-    <input type="submit" value="Submit Now" />
-  </form>
-
-  <p>This form will auto-submit after 30 seconds and redirect to thank you page.</p>
-</body>
-</html>
+<form 
+  method="POST" 
+  action="https://script.google.com/macros/s/AKfycbz8uf71AhwY_ra8lNs6rHoOoFt2b7e9DmYci2ffiklIAZbMBLgQ4LukZa78cCPbpIaGJA/exec"
+>
+  <input name="Email" type="email" placeholder="Email" required>
+  <input name="Name" type="text" placeholder="Name" required>
+  <button type="submit">Send</button>
+</form>
