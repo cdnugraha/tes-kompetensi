@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer(30, 'quizForm')">
-  <h2>Quick Quiz aja b</h2>
+  <h2>Quick Quiz aja 16.20</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
@@ -57,6 +57,9 @@
     }
 
     function handleSubmit() {
+      const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
+      if (!confirmed) return false; // batalkan jika user tidak setuju
+      
       formSubmitted = true;
       return true; // allow form submission
     }
