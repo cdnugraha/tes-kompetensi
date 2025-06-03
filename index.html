@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer(30, 'quizForm')">
-  <h2>Quick Quiz aja</h2>
+  <h2>Quick Quiz aja b</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
@@ -63,7 +63,10 @@
 
     function iframeLoaded() {
       if (formSubmitted) {
-        window.location.href = "thankyou.html";
+        setTimeout(() => {
+          alert("✅ Form submitted successfully!");
+          window.location.href = "thankyou.html";
+        }, 1000);
       }
     }
   </script>
