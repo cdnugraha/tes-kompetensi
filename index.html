@@ -2,41 +2,72 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Test Form Gsheet</title>
+    <title>Form Timer + GSheet</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      #countdown {
+        font-weight: bold;
+        color: red;
+        margin-bottom: 10px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Test Form Gsheet xhr</h1>
-    <form name="submit-to-google-sheet">
-      <input name="email" type="email" placeholder="Email" required />
-      <input name="name" type="text" placeholder="Name" required />
-      <textarea name="message" placeholder="Message" required></textarea>
-      <button type="submit">Send</button>
+    <h2>Form Quiz</h2>
+
+    <div id="countdown">Time remaining: 30s</div>
+
+    <form name="submit-to-google-sheet" id="quizForm">
+      <input name="email" type="email" placeholder="Email" required /><br /><br />
+      <input name="name" type="text" placeholder="Name" required /><br /><br />
+      <textarea name="message" placeholder="Your message..." required></textarea><br /><br />
+      <button type="submit">Submit</button>
     </form>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const scriptURL = "https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec";
-        const form = document.forms["submit-to-google-sheet"];
+      const scriptURL =
+        "https://script.google.com/macros/s/AKfycbxT05_HSt4gKiH1dUJoO8qCmwlksUBuKsT0H7jeYAtuDUnTjjfDFpDBV-XxcQE_E3y38Q/exec";
+      const form = document.forms["submit-to-google-sheet"];
+      const countdownDisplay = document.getElementById("countdown");
+      let timerDuration = 30;
 
-        form.addEventListener("submit", (e) => {
-          e.preventDefault(); // Stop default submit behavior
+      // ⏳ Start Timer
+      function startTimer(duration, formId) {
+        let timeLeft = duration;
+        const interval = setInterval(() => {
+          countdownDisplay.textContent = `Time remaining: ${timeLeft}s`;
+          timeLeft--;
+          if (timeLeft < 0) {
+            clearInterval(interval);
+            document.getElementById(formId).requestSubmit();
+          }
+        }, 1000);
+      }
 
-          const xhr = new XMLHttpRequest();
-          xhr.open("POST", scriptURL, true);
-          xhr.onload = function () {
-            if (xhr.status === 200) {
-              alert("Success! Your form has been submitted.");
-              form.reset();
-            } else {
-              alert("Error! Submission failed.");
-            }
-          };
-          xhr.onerror = function () {
-            alert("Network Error! Submission failed.");
-          };
-          xhr.send(new FormData(form));
-        });
+      // ✅ Submit with XMLHttpRequest (no fetch CORS error)
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", scriptURL, true);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            alert("Success! Your form has been submitted.");
+            window.location.href = "thankyou.html";
+          } else {
+            alert("Error submitting form.");
+          }
+        };
+        xhr.onerror = function () {
+          alert("Network error.");
+        };
+        xhr.send(new FormData(form));
       });
+
+      // ▶️ Start when loaded
+      startTimer(timerDuration, "quizForm");
     </script>
   </body>
 </html>
