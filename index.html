@@ -27,27 +27,27 @@
       event.preventDefault();
       const answer = event.target.elements["answer"].value;
 
-      fetch("https://script.google.com/macros/s/AKfycbyPGFeNErLEqfAejAzJMuMVqJRfBFk11N0r2-fDMQKzufiqLZs8xpS7843NHHz2R_mzdQ/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ answer: answer })
-      })
-      .then(response => response.text())
-      .then(result => {
-        console.log("Server response:", result);
-        window.location.href = "thankyou.html";
-      })
-      .catch(error => {
-        console.error("Submit Error:", error);
-        alert("Error submitting: " + error);
-      });
+     fetch("https://script.google.com/macros/s/AKfycbwu75PEfoYyHXYQ7n3jI5wFImu7EFjtdoMfwIpwsC3lkNP6wKi_vizxnsuUsbM5diDXJw/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ answer: answer })
+})
+.then(response => response.json()) // HARUS dibaca sebagai .json() karena Apps Script kirim JSON
+.then(result => {
+  console.log("Server response:", result);
+  window.location.href = "thankyou.html";
+})
+.catch(error => {
+  console.error("Submit Error:", error);
+  alert("Error submitting: " + error);
+});
     }
   </script>
 </head>
 <body onload="startTimer(timerDuration, 'quizForm')">
-  <h2>Quick Quiz bb</h2>
+  <h2>Quick Quiz cc</h2>
 
   <div id="countdown" style="font-weight: bold; color: red; margin-bottom: 10px;">
     Time remaining: 30s
