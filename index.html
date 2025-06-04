@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 14.12</h2>
+  <h2>Quick Quiz 14.23</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
@@ -63,9 +63,9 @@
       });
        
       // ✅ Tambahkan ini agar handleSubmit dipanggil
-     // form.addEventListener("submit", handleSubmit);
+      form.addEventListener("submit", handleSubmit);
 
-        form.addEventListener("submit", (e) => {
+       /* form.addEventListener("submit", (e) => {
         if (!formSubmitted) {
           // Jika auto submit, tidak perlu confirm
           if (e.submitter && e.submitter.id === "autoSubmitBtn") {
@@ -85,7 +85,7 @@
             disableForm();
           }
         }
-      });
+      }); */
        
       // Start the timer
       startTimer();
@@ -130,18 +130,20 @@
       formSubmitted = true;
       return true;
     
-    }
+    }*/
     
     function handleSubmit(e) {
+      if (e.submitter.id === "autoSubmitBtn"){
       if (!formSubmitted) {
         const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
         if (!confirmed) {
           e.preventDefault(); // Stop form submit
           return;
         }
-      }
+      }} 
+      formSubmitted = true; 
     }
-    */
+    
     
     function iframeLoaded() {
       if (formSubmitted) {
