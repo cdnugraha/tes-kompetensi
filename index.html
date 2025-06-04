@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="container">
-  <h2>Quick Quiz 15.53</h2>
+  <h2>Quick Quiz 16.03</h2>
   <div id="countdown" class="countdown">Time remaining: 3600s</div>
 
   
@@ -122,6 +122,8 @@
     }
     
     function handleSubmit(e) {
+      if (timeLeft !== 0) {
+  
       if (e.submitter && e.submitter.id === "submitBtn"){
       if (!formSubmitted) {
         const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
@@ -135,6 +137,9 @@
       clearInterval(timerInterval);
       display.textContent = `Time remaining: 0s`;
       localStorage.setItem("timeLeft", 0);
+      } else {
+        alert("⏰ Waktu habis! Form sudah otomatis dikirim.");
+      }
     }
     
     
