@@ -8,7 +8,7 @@
  
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 15.01</h2>
+  <h2>Quick Quiz 15.05</h2>
   <div id="countdown" class="countdown">Time remaining: 3600s</div>
 
   
@@ -46,7 +46,7 @@
       if (saved.message) form.message.value = saved.message;
 
        // Restore time and submission status
-        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 30;
+        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 3600;
         formSubmitted = localStorage.getItem("formSubmitted") === "true";
 
         if (formSubmitted) {
