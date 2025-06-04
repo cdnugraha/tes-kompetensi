@@ -17,10 +17,11 @@
   </style>
 </head>
 <body>
-  <h2>Quick Quiz 8.39</h2>
+  <h2>Quick Quiz 8.52</h2>
   <div id="countdown">Time remaining: 30s</div>
 
-  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
+  
+  <form id="quizForm" onsubmit="return handleSubmit(event)">
     <label>Email:</label><br>
     <input name="email" type="email" required /><br><br>
 
@@ -36,14 +37,14 @@
   <iframe name="hidden_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
 
   <script>
+    //action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe"
     let formSubmitted = false;
-    //const form = document.getElementById("quizForm");
     let timerInterval;
     let timeLeft = 30;
+    const form = document.getElementById("quizForm");
+    const display = document.getElementById("countdown");
 
      window.onload = () => {
-      const form = document.getElementById("quizForm");
-
       // Restore saved input
       const saved = JSON.parse(localStorage.getItem("quizFormData") || "{}");
       if (saved.email) form.email.value = saved.email;
@@ -65,46 +66,80 @@
     };
 
     function startTimer(form) {
-      const display = document.getElementById("countdown");
+     // const display = document.getElementById("countdown");
 
       timerInterval = setInterval(() => {
         display.textContent = `Time remaining: ${timeLeft}s`;
         timeLeft--;
 
         if (timeLeft < 0) {
-          clearInterval(timerInterval);
-         // const form = document.getElementById(formId);          
+          clearInterval(timerInterval);       
           display.textContent = `Time remaining: 0s`;
           alert("⏰ Waktu habis! Form akan otomatis dikirim.");
-          // Disable all inputs
-          [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
-          form.requestSubmit();
+          disableForm();
+          autoSubmit();
         }
       }, 1000);
     }
 
-    function handleSubmit() {
-      const form = document.getElementById("quizForm");
-      const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
-      if (!confirmed) return false; // batalkan jika user tidak setuju
-
-      clearInterval(timerInterval); 
-      document.getElementById("countdown").textContent = "Time remaining: 0s";
-
+    function disableForm() {
       [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
-      
-      formSubmitted = true;
-      return true; // allow form submission
     }
 
-    function iframeLoaded() {
-      if (formSubmitted) {
-        setTimeout(() => {
-          alert("✅ Form submitted successfully!");
-          window.location.href = "thankyou.html";
-        }, 1000);
-      }
+    function autoSubmit() {
+      const formData = new FormData(form);
+      const url = "https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec";
+
+      fetch(url, {
+        method: "POST",
+        body: formData,
+      })
+        .then(response => {
+          if (response.ok) {
+            alert("✅ Form submitted successfully!");
+            window.location.href = "thankyou.html";
+          } else {
+            alert("❌ Gagal mengirim data.");
+          }
+        })
+        .catch(err => {
+          alert("❌ Error: " + err.message);
+        });
     }
+
+   function handleSubmit(event) {
+      event.preventDefault();
+
+      const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
+      if (!confirmed) return false;
+
+      clearInterval(timerInterval);
+      display.textContent = "Time remaining: 0s";
+      disableForm();
+
+      const formData = new FormData(form);
+      const url = "https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec";
+
+      fetch(url, {
+        method: "POST",
+        body: formData,
+      })
+        .then(response => {
+          if (response.ok) {
+            formSubmitted = true;
+            alert("✅ Form submitted successfully!");
+            window.location.href = "thankyou.html";
+          } else {
+            alert("❌ Gagal mengirim data.");
+          }
+        })
+        .catch(err => {
+          alert("❌ Error: " + err.message);
+        });
+
+      return false;
+    }
+
   </script>
 </body>
 </html>
