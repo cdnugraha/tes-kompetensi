@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="container">
-  <h2>Quick Quiz 16.07</h2>
+  <h2>Quick Quiz 16.08</h2>
   <div id="countdown" class="countdown">Time remaining: 3600s</div>
 
   
@@ -139,6 +139,8 @@
       localStorage.setItem("timeLeft", 0);
       } else {
         alert("⏰ Waktu habis! Form sudah otomatis dikirim.");
+        e.preventDefault(); // Stop form submit
+          return;
       }
     }
     
