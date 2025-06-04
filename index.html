@@ -9,8 +9,8 @@
 </head>
 <body>
   <div class="container">
-  <h2>Quick Quiz 16.08</h2>
-  <div id="countdown" class="countdown">Time remaining: 3600s</div>
+  <h2>Quick Quiz 16.15</h2>
+  <div id="countdown" class="countdown">Sisa Waktu: 60:00</div>
 
   
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbxt0oSsofYc9w6IT8E_2Gyvm-8ku30M3UM4TnhO9hW-ArEcGpEbAa5OIBv4vyTQrCww3w/exec" method="POST" target="hidden_iframe">
@@ -63,7 +63,7 @@
 
         if (formSubmitted) {
           disableForm();
-          display.textContent = `Time remaining: 0s`;
+          display.textContent = `Sisa Waktu: 00:00`;
         } else {
           startTimer();
         }
@@ -88,11 +88,11 @@
     function startTimer() {
      // const display = document.getElementById("countdown");
       // onsubmit="return handleSubmit()"
-      display.textContent = `Time remaining: ${timeLeft}s`;
+      display.textContent = `Sisa Waktu: ${formatTime(timeLeft)}`;
 
       timerInterval = setInterval(() => {
         timeLeft--;
-        display.textContent = `Time remaining: ${timeLeft}s`;
+        display.textContent = `Sisa Waktu: ${formatTime(timeLeft)}`;
         localStorage.setItem("timeLeft", timeLeft);
         
 
@@ -100,7 +100,7 @@
         if (timeLeft < 0) {
           if(!formSubmitted){
           clearInterval(timerInterval);       
-          display.textContent = `Time remaining: 0s`;
+          display.textContent = `Sisa Waktu: 00:00`;
           alert("⏰ Waktu habis! Form akan otomatis dikirim.");
           localStorage.setItem("formSubmitted", "true");
           document.getElementById("autoSubmitBtn").click();          
@@ -114,6 +114,12 @@
         }
         }
       }, 1000);
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
     }
 
     function disableForm() {
@@ -135,7 +141,7 @@
       formSubmitted = true; 
       localStorage.setItem("formSubmitted", "true");
       clearInterval(timerInterval);
-      display.textContent = `Time remaining: 0s`;
+      display.textContent = `Sisa Waktu: 00:00`;
       localStorage.setItem("timeLeft", 0);
       } else {
         alert("⏰ Waktu habis! Form sudah otomatis dikirim.");
