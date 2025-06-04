@@ -17,11 +17,11 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 11.00</h2>
+  <h2>Quick Quiz 11.10</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
-  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe"">
+  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe">
     <label>Email:</label><br>
     <input name="email" type="email" required /><br><br>
 
@@ -60,6 +60,10 @@
         };
         localStorage.setItem("quizFormData", JSON.stringify(formData));
       });
+       
+      // ✅ Tambahkan ini agar handleSubmit dipanggil
+      form.addEventListener("submit", handleSubmit);
+       
       // Start the timer
       startTimer();
     };
@@ -89,7 +93,7 @@
       [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
     }
 
-    
+    /*
     function handleSubmit() {
 
       const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
@@ -103,6 +107,15 @@
       return true;
     
     }
+    */
+    function handleSubmit(e) {
+      if (!formSubmitted) {
+        const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
+        if (!confirmed) {
+          e.preventDefault(); // Stop form submit
+          return;
+        }
+      }
     
     function iframeLoaded() {
       if (formSubmitted) {
