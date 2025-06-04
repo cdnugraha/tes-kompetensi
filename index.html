@@ -17,7 +17,7 @@
   </style>
 </head>
 <body>
-  <h2>Quick Quiz 8.36</h2>
+  <h2>Quick Quiz 8.39</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
@@ -48,7 +48,7 @@
       const saved = JSON.parse(localStorage.getItem("quizFormData") || "{}");
       if (saved.email) form.email.value = saved.email;
       if (saved.name) form.name.value = saved.name;
-      if (saved.answer) form.message.value = saved.message;
+      if (saved.message) form.message.value = saved.message;
 
       // Save input to localStorage
       form.addEventListener("input", () => {
