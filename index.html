@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer(30, 'quizForm')">
-  <h2>Quick Quiz aja 16.20</h2>
+  <h2>Quick Quiz aja 8.09</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
@@ -37,12 +37,32 @@
 
   <script>
     let formSubmitted = false;
+    const form = document.getElementById("quizForm");
+    let timerInterval;
+
+     // Simpan ke localStorage saat input berubah
+    form.addEventListener("input", () => {
+      const formData = {
+        email: form.email.value,
+        name: form.name.value,
+        answer: form.answer.value,
+      };
+      localStorage.setItem("quizFormData", JSON.stringify(formData));
+    });
+
+    // Ambil kembali data saat halaman dimuat
+    window.addEventListener("load", () => {
+      const saved = JSON.parse(localStorage.getItem("quizFormData") || "{}");
+      if (saved.email) form.email.value = saved.email;
+      if (saved.name) form.name.value = saved.name;
+      if (saved.answer) form.answer.value = saved.answer;
+    });
 
     function startTimer(duration, formId) {
       let timeLeft = duration;
       const display = document.getElementById("countdown");
 
-      const interval = setInterval(() => {
+      timerInterval = setInterval(() => {
         display.textContent = `Time remaining: ${timeLeft}s`;
         timeLeft--;
 
@@ -51,6 +71,8 @@
           const form = document.getElementById(formId);
           // Disable all inputs
           [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
+          display.textContent = `Time remaining: 0s`;
+          alert("⏰ Waktu habis! Form akan otomatis dikirim.");
           form.requestSubmit();
         }
       }, 1000);
@@ -59,6 +81,11 @@
     function handleSubmit() {
       const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
       if (!confirmed) return false; // batalkan jika user tidak setuju
+
+      clearInterval(timerInterval); 
+      document.getElementById("countdown").textContent = "Time remaining: 0s";
+
+      [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
       
       formSubmitted = true;
       return true; // allow form submission
