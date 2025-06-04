@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 14.30</h2>
+  <h2>Quick Quiz 14.37</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
@@ -52,6 +52,17 @@
       if (saved.name) form.name.value = saved.name;
       if (saved.message) form.message.value = saved.message;
 
+       // Restore time and submission status
+        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 30;
+        formSubmitted = localStorage.getItem("formSubmitted") === "true";
+
+        if (formSubmitted) {
+          disableForm();
+          display.textContent = `Time remaining: 0s`;
+        } else {
+          startTimer();
+        }
+
       // Save input to localStorage
       form.addEventListener("input", () => {
         const formData = {
@@ -66,7 +77,7 @@
       form.addEventListener("submit", handleSubmit);
        
       // Start the timer
-      startTimer();
+    //  startTimer();
     };
 
     function startTimer() {
