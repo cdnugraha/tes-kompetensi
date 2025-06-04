@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 10.34</h2>
+  <h2>Quick Quiz 10.52</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
@@ -31,7 +31,7 @@
     <label>Message:</label><br>
     <textarea name="message" required></textarea><br><br>
 
-    <button type="submit">Submit Now</button>
+    <button id="submitBtn" type="submit">Submit Now</button>
   </form>
 
   <iframe name="hidden_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
@@ -61,7 +61,7 @@
         localStorage.setItem("quizFormData", JSON.stringify(formData));
       });
 
-      // form.addEventListener("submit", handleSubmit);
+       form.addEventListener("submit", (e) => handleSubmit(e, false)); //tambahan
 
       // Start the timer
       startTimer();
@@ -81,8 +81,9 @@
           alert("⏰ Waktu habis! Form akan otomatis dikirim.");
           disableForm();
           formSubmitted = true;
-          form.requestSubmit(); // langsung kirim tanpa confirm    
-          return true;
+          handleSubmit(null, true); 
+          // Klik tombol submit secara otomatis (seperti manual)
+         // document.getElementById("submitBtn").click();
         }
       }, 1000);
     }
@@ -91,6 +92,7 @@
       [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
     }
 
+    /*
     function handleSubmit() {
 
       const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
@@ -104,6 +106,22 @@
       return true;
     
     }
+    */
+    function handleSubmit(e, autoSubmit = false) {
+    if (e) e.preventDefault(); // Always prevent default first
+
+    if (!autoSubmit) {
+      const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
+      if (!confirmed) return;
+    }
+
+    clearInterval(timerInterval);
+    display.textContent = "Time remaining: 0s";
+    disableForm();
+
+    formSubmitted = true;
+    form.submit(); // now truly submit
+  }
 
     function iframeLoaded() {
       if (formSubmitted) {
