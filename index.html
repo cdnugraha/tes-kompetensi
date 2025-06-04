@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 10.23</h2>
+  <h2>Quick Quiz 10.26</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
@@ -81,7 +81,8 @@
           alert("⏰ Waktu habis! Form akan otomatis dikirim.");
           disableForm();
           formSubmitted = true;
-          form.submit(); // langsung kirim tanpa confirm                 
+          //form.submit(); // langsung kirim tanpa confirm    
+          return true;
         }
       }, 1000);
     }
