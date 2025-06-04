@@ -8,22 +8,24 @@
  
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 14.56</h2>
-  <div id="countdown">Time remaining: 30s</div>
+  <h2>Quick Quiz 15.01</h2>
+  <div id="countdown" class="countdown">Time remaining: 3600s</div>
 
   
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe">
     <label>Email:</label><br>
-    <input name="email" type="email" required /><br><br>
+    <input name="email" type="email" required /><br>
 
     <label>Name:</label><br>
-    <input name="name" type="text" required /><br><br>
+    <input name="name" type="text" required /><br>
 
     <label>Message:</label><br>
-    <textarea name="message" required></textarea><br><br>
+    <textarea name="message" required></textarea><br>
 
-    <button id="submitBtn" type="submit">Submit Now</button>
+    <div class="button-group">
+    <button id="submitBtn" type="submit">Kirim Jawaban</button>
     <button id="autoSubmitBtn" type="submit" style="display: none;">Auto Submit</button>
+    </div>
   </form>
 
   <iframe name="hidden_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
