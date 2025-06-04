@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 14.02</h2>
+  <h2>Quick Quiz 14.12</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
@@ -32,6 +32,7 @@
     <textarea name="message" required></textarea><br><br>
 
     <button id="submitBtn" type="submit">Submit Now</button>
+    <button id="autoSubmitBtn" type="submit" style="display: none;">Auto Submit</button>
   </form>
 
   <iframe name="hidden_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
@@ -62,7 +63,29 @@
       });
        
       // ✅ Tambahkan ini agar handleSubmit dipanggil
-      form.addEventListener("submit", handleSubmit);
+     // form.addEventListener("submit", handleSubmit);
+
+        form.addEventListener("submit", (e) => {
+        if (!formSubmitted) {
+          // Jika auto submit, tidak perlu confirm
+          if (e.submitter && e.submitter.id === "autoSubmitBtn") {
+            formSubmitted = true;
+            clearInterval(timerInterval);
+            display.textContent = "Time remaining: 0s";
+            disableForm();
+          } else {
+            const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
+            if (!confirmed) {
+              e.preventDefault();
+              return;
+            }
+            formSubmitted = true;
+            clearInterval(timerInterval);
+            display.textContent = "Time remaining: 0s";
+            disableForm();
+          }
+        }
+      });
        
       // Start the timer
       startTimer();
@@ -108,23 +131,17 @@
       return true;
     
     }
-    */
+    
     function handleSubmit(e) {
       if (!formSubmitted) {
-        if (e) {
         const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
         if (!confirmed) {
           e.preventDefault(); // Stop form submit
           return;
         }
       }
-        clearInterval(timerInterval);
-        display.textContent = "Time remaining: 0s";
-        disableForm();
-        formSubmitted = true;
-        }
-      return true;
     }
+    */
     
     function iframeLoaded() {
       if (formSubmitted) {
