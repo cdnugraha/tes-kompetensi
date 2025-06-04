@@ -17,11 +17,11 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 9.31</h2>
+  <h2>Quick Quiz 9.35</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
-  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
+  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe">
     <label>Email:</label><br>
     <input name="email" type="email" required /><br><br>
 
@@ -67,6 +67,7 @@
 
     function startTimer() {
      // const display = document.getElementById("countdown");
+      // onsubmit="return handleSubmit()"
 
       timerInterval = setInterval(() => {
         display.textContent = `Time remaining: ${timeLeft}s`;
