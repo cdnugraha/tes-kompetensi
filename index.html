@@ -17,11 +17,11 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 9.22</h2>
+  <h2>Quick Quiz 9.31</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
-  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit)">
+  <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
     <label>Email:</label><br>
     <input name="email" type="email" required /><br><br>
 
@@ -77,7 +77,13 @@
           display.textContent = `Time remaining: 0s`;
           alert("⏰ Waktu habis! Form akan otomatis dikirim.");
           disableForm();
-          form.requestSubmit();
+          //form.requestSubmit();
+          formSubmitted = true;
+          setTimeout(() => {
+            window.location.href = "thankyou.html";
+          }, 1000); // delay 1 detik
+          
+          return true;
         }
       }, 1000);
     }
@@ -95,9 +101,13 @@
       display.textContent = "Time remaining: 0s";
       disableForm();
 
-      formSubmitted = true;             
+      formSubmitted = true;
+
+      setTimeout(() => {
+        window.location.href = "thankyou.html";
+      }, 1000); // delay 1 detik
+      
       return true;
-      window.location.href = "thankyou.html";  
     }
 
   </script>
