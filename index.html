@@ -16,8 +16,8 @@
     }
   </style>
 </head>
-<body onload="startTimer(30, 'quizForm')">
-  <h2>Quick Quiz aja 8.09</h2>
+<body>
+  <h2>Quick Quiz</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   <form id="quizForm" action="https://script.google.com/macros/s/AKfycbzumVPz-83ImWAn8Aoq8cJVt_Hrqnj0KYCT-WAuH7wLYtj0WL1TOCJLaC2LEHSVQK0_CA/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit()">
@@ -27,8 +27,8 @@
     <label>Name:</label><br>
     <input name="name" type="text" required /><br><br>
 
-    <label>Answer:</label><br>
-    <textarea name="answer" required></textarea><br><br>
+    <label>Message:</label><br>
+    <textarea name="message" required></textarea><br><br>
 
     <button type="submit">Submit Now</button>
   </form>
@@ -37,29 +37,34 @@
 
   <script>
     let formSubmitted = false;
-    const form = document.getElementById("quizForm");
+    //const form = document.getElementById("quizForm");
     let timerInterval;
+    let timeLeft = 30;
 
-     // Simpan ke localStorage saat input berubah
-    form.addEventListener("input", () => {
-      const formData = {
-        email: form.email.value,
-        name: form.name.value,
-        answer: form.answer.value,
-      };
-      localStorage.setItem("quizFormData", JSON.stringify(formData));
-    });
+     window.onload = () => {
+      const form = document.getElementById("quizForm");
 
-    // Ambil kembali data saat halaman dimuat
-    window.addEventListener("load", () => {
+      // Restore saved input
       const saved = JSON.parse(localStorage.getItem("quizFormData") || "{}");
       if (saved.email) form.email.value = saved.email;
       if (saved.name) form.name.value = saved.name;
       if (saved.answer) form.answer.value = saved.answer;
-    });
 
-    function startTimer(duration, formId) {
-      let timeLeft = duration;
+      // Save input to localStorage
+      form.addEventListener("input", () => {
+        const formData = {
+          email: form.email.value,
+          name: form.name.value,
+          answer: form.answer.value,
+        };
+        localStorage.setItem("quizFormData", JSON.stringify(formData));
+      });
+
+      // Start the timer
+      startTimer(form);
+    };
+
+    function startTimer(form) {
       const display = document.getElementById("countdown");
 
       timerInterval = setInterval(() => {
@@ -68,17 +73,18 @@
 
         if (timeLeft < 0) {
           clearInterval(interval);
-          const form = document.getElementById(formId);
-          // Disable all inputs
-          [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
+         // const form = document.getElementById(formId);          
           display.textContent = `Time remaining: 0s`;
           alert("⏰ Waktu habis! Form akan otomatis dikirim.");
+          // Disable all inputs
+          [...form.querySelectorAll('input, textarea, button')].forEach(el => el.disabled = true);
           form.requestSubmit();
         }
       }, 1000);
     }
 
     function handleSubmit() {
+      const form = document.getElementById("quizForm");
       const confirmed = confirm("Apakah kamu yakin ingin mengirim jawaban?");
       if (!confirmed) return false; // batalkan jika user tidak setuju
 
