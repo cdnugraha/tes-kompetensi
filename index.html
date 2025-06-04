@@ -17,7 +17,7 @@
   </style>
 </head>
 <body onload="startTimer()">
-  <h2>Quick Quiz 10.57</h2>
+  <h2>Quick Quiz 11.00</h2>
   <div id="countdown">Time remaining: 30s</div>
 
   
@@ -60,9 +60,6 @@
         };
         localStorage.setItem("quizFormData", JSON.stringify(formData));
       });
-
-       form.addEventListener("submit", (e) => handleSubmit(e, false)); //tambahan
-
       // Start the timer
       startTimer();
     };
