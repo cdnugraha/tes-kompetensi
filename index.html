@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tes Kompetensi Rekrutmen Mitra Tambahan BPS Kota Yogyakarta</title>
   <link rel="stylesheet" href="bootstrap.css" />
+
+  <style>
+  #soal {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  #soal.show {
+    display: block;
+    opacity: 1;
+  }
+</style>
  
 </head>
 <body>
@@ -24,6 +37,10 @@
       <input class="form-control" name="name" type="text" required />
   </div>
     <br/>
+
+    <button type="button" id="startBtn" class="btn btn-primary mt-3">Mulai Tes</button>
+
+    <div id="soal" style="display: none;">
 
     <h4>Pilihlah satu jawaban yang paling benar dari soal berikut ini.</h4>
     <br/>
@@ -303,7 +320,7 @@
     <button id="autoSubmitBtn" class="btn btn-default" type="submit" style="display: none;">Auto Submit</button>
   </div>
   </form>
-
+</div>
     </div>
 
   <iframe name="hidden_iframe" style="display:none;" onload="iframeLoaded()"></iframe>
@@ -398,6 +415,21 @@
       
         // Pastikan handleSubmit aktif
         form.addEventListener("submit", handleSubmit);
+
+        document.getElementById("startBtn").addEventListener("click", () => {
+          const email = form.email.value.trim();
+          const name = form.name.value.trim();
+        
+          if (!email || !name) {
+            alert("⚠️ Silakan isi Email dan Nama terlebih dahulu sebelum memulai tes.");
+            return;
+          }
+        
+          const soalDiv = document.getElementById("soal");
+          soalDiv.classList.add("show"); // tambahkan class untuk animasi
+          document.getElementById("startBtn").style.display = "none"; // sembunyikan tombol
+        });
+      
       };
 
     function startTimer() {
