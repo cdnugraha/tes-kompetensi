@@ -419,9 +419,15 @@
         document.getElementById("startBtn").addEventListener("click", () => {
           const email = form.email.value.trim();
           const name = form.name.value.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         
           if (!email || !name) {
             alert("⚠️ Silakan isi Email dan Nama terlebih dahulu sebelum memulai tes.");
+            return;
+          }
+
+          if (!emailRegex.test(email)) {
+            alert("⚠️ Format email tidak valid. Contoh yang benar: nama@domain.com");
             return;
           }
         
