@@ -26,7 +26,7 @@
     <br/>
 
     <h4>Pilihlah satu jawaban yang paling benar dari soal berikut ini.</h4>
-    <br/><br/>
+    <br/>
 
     <h4>1. 2, 2, 6, 8, 10, … , … </h4>
     <div class="radio">
@@ -312,7 +312,7 @@
     
     let formSubmitted = false;
     let timerInterval;
-    let timeLeft = 3600;
+    let timeLeft = 30;
     const form = document.getElementById("quizForm");
     const display = document.getElementById("countdown");
     const totalQuestions = 30;
@@ -327,7 +327,7 @@
       
 
        // Restore time and submission status
-        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 3600;
+        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 30;
         formSubmitted = localStorage.getItem("formSubmitted") === "true";
 
         if (formSubmitted) {
@@ -368,7 +368,7 @@
         }
       
         // Restore time and submission status
-        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 3600;
+        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 30;
         formSubmitted = localStorage.getItem("formSubmitted") === "true";
       
         if (formSubmitted) {
