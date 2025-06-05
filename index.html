@@ -329,48 +329,11 @@
     
     let formSubmitted = false;
     let timerInterval;
-    let timeLeft = 30;
+    let timeLeft = 3600;
     const form = document.getElementById("quizForm");
     const display = document.getElementById("countdown");
     const totalQuestions = 30;
 
-    /* 
-    window.onload = () => {
-      // Restore saved input
-      const saved = JSON.parse(localStorage.getItem("quizFormData") || "{}");
-      if (saved.email) form.email.value = saved.email;
-      if (saved.name) form.name.value = saved.name;
-      if (saved.q1) form.q1.value = saved.q1;
-      
-
-       // Restore time and submission status
-        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 30;
-        formSubmitted = localStorage.getItem("formSubmitted") === "true";
-
-        if (formSubmitted) {
-          disableForm();
-          display.textContent = `Sisa Waktu: 00:00`;
-        } else {
-          startTimer();
-        }
-
-       
-      // Save input to localStorage
-      form.addEventListener("input", () => {
-        const formData = {
-          email: form.email.value,
-          name: form.name.value,
-          q1: form.q1.value,
-        };
-        localStorage.setItem("quizFormData", JSON.stringify(formData));
-      }); 
-       
-      // ✅ Tambahkan ini agar handleSubmit dipanggil
-      form.addEventListener("submit", handleSubmit);
-       
-      // Start the timer
-    //  startTimer();
-    }; */
     window.onload = () => {
         // Restore saved input
         const saved = JSON.parse(localStorage.getItem("quizFormData") || "{}");
@@ -385,7 +348,7 @@
         }
       
         // Restore time and submission status
-        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 30;
+        timeLeft = parseInt(localStorage.getItem("timeLeft")) || 3600;
         formSubmitted = localStorage.getItem("formSubmitted") === "true";
       
         if (formSubmitted) {
@@ -439,8 +402,7 @@
       };
 
     function startTimer() {
-     // const display = document.getElementById("countdown");
-      // onsubmit="return handleSubmit()"
+    
       display.textContent = `Sisa Waktu: ${formatTime(timeLeft)}`;
 
       timerInterval = setInterval(() => {
@@ -459,8 +421,6 @@
           document.getElementById("autoSubmitBtn").click();          
           formSubmitted = true;
           disableForm();
-        //  handleSubmit(null, true); 
-          // Klik tombol submit secara otomatis (seperti manual)
           
         } else {
             alert("⏰ Terima kasih!");
