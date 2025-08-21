@@ -1,0 +1,21 @@
+{
+  "nama": "Budi",
+  "umur": 20,
+  "jurusan": "Informatika",
+  "isActive": true,
+  "alamat": {
+    "jalan": "Jalan Mawar No. 123",
+    "kota": "Yogyakarta",
+    "kodePos": "55221"
+  },
+  "mataKuliah": [
+    {
+      "nama": "Pemrograman Dasar",
+      "sks": 3
+    },
+    {
+      "nama": "Kalkulus",
+      "sks": 4
+    }
+  ]
+}
